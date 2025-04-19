@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_tipo_combustible"
+        android:title="Calcular" />
+    <item
+        android:id="@+id/nav_historial"
+        android:title="Historial" />
+</menu>

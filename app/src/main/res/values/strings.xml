@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GasolineraApplication</string>
+    <string name="drawer_cerrar">Cerrar</string>
+    <string name="drawer_abrir">Abrir</string>
+    <string name="titulo_tipo_combustible">Selecciona el tipo de combustible</string>
+
+</resources>

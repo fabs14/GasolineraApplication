@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewResultado"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/layoutResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editLitros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Litros disponibles"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/editMetros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Metros de fila"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnAbrirMapa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dibujar fila en el mapa"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnCalcular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calcular y Guardar"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnVerResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver Resultado Calculado"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/txtResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resultado aparecerá aquí..."
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:textColor="#000000" />
+    </LinearLayout>
+</ScrollView>
