@@ -36,21 +36,7 @@ class SucursalDato(context: Context) {
         db.close()
         return lista
     }
-    // obtiene cantidad de bombas
-    fun obtenerCantidadBombas(idSucursal: Int): Int {
-        db = helper.readableDatabase
-        val query = "SELECT cantidad_bombas FROM Sucursal WHERE id = ?"
-        val cursor = db.rawQuery(query, arrayOf(idSucursal.toString()))
-        var cantidad = 1  // Valor de respaldo por defecto
 
-        if (cursor.moveToFirst()) {
-            cantidad = cursor.getInt(0)
-        }
-
-        cursor.close()
-        db.close()
-        return cantidad
-    }
     fun obtenerIdSucursalCombustible(idSucursal: Int, nombreCombustible: String): Int {
         db = helper.readableDatabase
 

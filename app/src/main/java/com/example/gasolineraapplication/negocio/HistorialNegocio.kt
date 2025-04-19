@@ -18,6 +18,7 @@ class HistorialNegocio(context: Context) {
                 val litros = cursor.getDouble(2)
                 val tipo = cursor.getString(3)
                 val sucursal = cursor.getString(4)
+                val alcanza = cursor.getInt(5) == 1
 
                 val texto = """
                     🕒 Fecha: $fecha
@@ -25,6 +26,7 @@ class HistorialNegocio(context: Context) {
                     🏪 Sucursal: $sucursal
                     ⏱ Tiempo estimado: $tiempo min
                     🛢️ Litros restantes: $litros L
+                    ✅ ¿Alcanza el combustible?: ${if (alcanza) "Sí" else "No"}
                 """.trimIndent()
 
                 lista.add(texto)

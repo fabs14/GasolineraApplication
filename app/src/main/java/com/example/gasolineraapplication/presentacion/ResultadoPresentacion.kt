@@ -3,15 +3,13 @@ package com.example.gasolineraapplication.presentacion
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.gasolineraapplication.R
 import com.example.gasolineraapplication.negocio.ResultadoNegocio
 
-class ResultadoPresentacion : BaseActivity() { // 👈 CAMBIADO: heredamos de BaseActivity
+class ResultadoPresentacion : BaseActivity() {
 
     private lateinit var editLitros: EditText
     private lateinit var editMetros: EditText
@@ -30,13 +28,13 @@ class ResultadoPresentacion : BaseActivity() { // 👈 CAMBIADO: heredamos de Ba
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val metros = result.data?.getDoubleExtra("metrosFila", 0.0) ?: 0.0
-            editMetros.setText(metros.toString())
+            editMetros.setText(metros.toInt().toString())
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_resultado) // 👈 Esto asegura que cargue la vista dentro del drawer
+        setContentView(R.layout.activity_resultado)
 
         // Vincular vistas
         editLitros = findViewById(R.id.editLitros)
@@ -46,22 +44,30 @@ class ResultadoPresentacion : BaseActivity() { // 👈 CAMBIADO: heredamos de Ba
         btnAbrirMapa = findViewById(R.id.btnAbrirMapa)
         txtResultado = findViewById(R.id.txtResultado)
 
+        // Ocultar resultado al inicio
+        txtResultado.visibility = View.GONE
+
         resultadoNegocio = ResultadoNegocio(this)
 
-        // Obtener IDs del intent
         idSucursal = intent.getIntExtra("idSucursal", -1)
         idSucursalCombustible = intent.getIntExtra("idSucursalCombustible", -1)
 
-        // Abrir mapa para dibujar fila
+        // Inhabilitar edición manual del campo metros
+        editMetros.isFocusable = false
+        editMetros.isClickable = false
+
         btnAbrirMapa.setOnClickListener {
-            val intent = Intent(this, MapaDibujoActivity::class.java)
+            val ubicacion = resultadoNegocio.obtenerUbicacionSucursal(idSucursal)
+            val intent = Intent(this, MapaDibujoActivity::class.java).apply {
+                putExtra("latitud", ubicacion?.first ?: -1.0)
+                putExtra("longitud", ubicacion?.second ?: -1.0)
+            }
             mapaLauncher.launch(intent)
         }
 
-        // Calcular y guardar resultado
         btnCalcular.setOnClickListener {
             val litros = editLitros.text.toString().toDoubleOrNull()
-            val metros = editMetros.text.toString().toDoubleOrNull()
+            val metros = editMetros.text.toString().toIntOrNull()?.toDouble()
 
             if (litros == null || metros == null || idSucursal == -1 || idSucursalCombustible == -1) {
                 Toast.makeText(this, "Completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
@@ -78,20 +84,23 @@ class ResultadoPresentacion : BaseActivity() { // 👈 CAMBIADO: heredamos de Ba
             if (exito) {
                 Toast.makeText(this, "Resultado guardado correctamente", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Error al guardar resultado", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Ya existe un cálculo reciente con los mismos datos", Toast.LENGTH_LONG).show()
             }
         }
 
-        // Ver último resultado
         btnVerResultado.setOnClickListener {
-            val resultado = resultadoNegocio.obtenerUltimoResultadoCalculado()
+            val resultado = resultadoNegocio.obtenerUltimoResultadoCalculado(idSucursalCombustible)
 
             if (resultado != null) {
-                val tiempo = resultado.first
-                val litrosRestantes = resultado.second
+                val (tiempo, litrosRestantes, alcanza) = resultado
 
-                txtResultado.text = "⏱ Tiempo estimado: $tiempo min\n" +
-                        "\uD83D\uDEE3️ Litros restantes: $litrosRestantes L"
+                val texto = "⏱ Tiempo estimado: $tiempo min\n" +
+                        "🛢️ Litros restantes: $litrosRestantes L\n" +
+                        "✅ ¿Alcanza el combustible?: ${if (alcanza) "Sí" else "No"}"
+
+                txtResultado.text = texto
+                txtResultado.setBackgroundResource(R.drawable.card_historial_background)
+                txtResultado.visibility = View.VISIBLE
             } else {
                 Toast.makeText(this, "No hay resultados registrados aún", Toast.LENGTH_SHORT).show()
             }

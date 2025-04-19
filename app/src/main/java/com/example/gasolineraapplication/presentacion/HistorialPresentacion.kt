@@ -25,12 +25,20 @@ class HistorialPresentacion : BaseActivity() {
         val lista = historialNegocio.obtenerHistorialFormateado()
 
         for (registro in lista) {
-            val textView = TextView(this).apply {
+            val card = TextView(this).apply {
                 text = registro
                 textSize = 16f
-                setPadding(16, 16, 16, 16)
+                setPadding(24, 16, 24, 16)
+                setTextColor(getColor(android.R.color.black))
+                setBackgroundResource(R.drawable.card_historial_background)
             }
-            layoutHistorial.addView(textView)
+
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(0, 0, 0, 24)
+            layoutHistorial.addView(card, params)
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.gasolineraapplication.R
 import com.example.gasolineraapplication.negocio.SucursalNegocio
 
@@ -32,6 +33,17 @@ class SucursalPresentacion : BaseActivity() {
         for ((idSucursal, nombreSucursal) in sucursales) {
             val btn = Button(this).apply {
                 text = nombreSucursal
+                setBackgroundResource(R.drawable.rounded_button)
+                setTextColor(ContextCompat.getColor(this@SucursalPresentacion, android.R.color.white))
+                textSize = 16f
+                setPadding(24, 16, 24, 16)
+                val layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                layoutParams.setMargins(0, 0, 0, 24) // margen entre botones
+                this.layoutParams = layoutParams
+
                 setOnClickListener {
                     val idSucursalCombustible =
                         sucursalNegocio.obtenerIdSucursalCombustible(idSucursal, tipo)

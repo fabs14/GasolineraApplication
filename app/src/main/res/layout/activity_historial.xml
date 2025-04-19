@@ -2,11 +2,32 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <LinearLayout
-        android:id="@+id/layoutHistorial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <!-- Título centrado -->
+        <TextView
+            android:id="@+id/txtTituloHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HISTORIAL DE ESTIMACIONES"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Contenedor para los registros -->
+        <LinearLayout
+            android:id="@+id/layoutHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
 </ScrollView>

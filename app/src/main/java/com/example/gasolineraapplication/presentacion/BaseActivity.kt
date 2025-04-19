@@ -32,6 +32,8 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTitleStyle)
+
         toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,

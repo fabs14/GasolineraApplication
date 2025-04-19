@@ -17,7 +17,7 @@ class BaseDeDatosHelper(context: Context) : SQLiteOpenHelper(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT NOT NULL,
                 direccion TEXT,
-                altitud REAL,
+                latitud REAL,
                 longitud REAL,
                 cantidad_bombas INTEGER NOT NULL
             );
@@ -48,22 +48,22 @@ class BaseDeDatosHelper(context: Context) : SQLiteOpenHelper(
                 metros_fila REAL NOT NULL,
                 tiempo_estimado_min INTEGER NOT NULL,
                 litros_restantes REAL NOT NULL,
+                alcanza_combustible INTEGER NOT NULL, -- 👈 NUEVO CAMPO BOOLEANO (0 o 1)
                 fechahora_calculo TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (id_sucursalcombustible) REFERENCES SucursalCombustible(id) ON DELETE CASCADE
             );
         """.trimIndent())
 
-        // Insertar datos predefinidos
         insertarDatosIniciales(db)
     }
 
     private fun insertarDatosIniciales(db: SQLiteDatabase) {
         // Insertar sucursales
         db.execSQL("""
-            INSERT INTO Sucursal (nombre, direccion, altitud, longitud, cantidad_bombas) VALUES
-            ('Sucursal Norte', 'Av. Banzer Km 6', -17.7350, -63.1350, 4),
-            ('Sucursal Centro', 'Calle Libertad N° 123', -17.7833, -63.1820, 3),
-            ('Sucursal Sur', '4to Anillo y Av. Santos Dumont', -17.8166, -63.1700, 5);
+            INSERT INTO Sucursal (nombre, direccion, latitud, longitud, cantidad_bombas) VALUES
+            ('Sucursal Alemana', 'Av. Alemana 2do Anillo', -17.769060723710524, -63.170995768184376, 4),
+            ('Sucursal Sur', 'Av. Santos Dumont 2do Anillo', -17.799920809954177, -63.18045380040208, 3),
+            ('Sucursal Beni', 'Av. Beni 2do Anillo', -17.769445762774943, -63.17875036029484, 5);
         """.trimIndent())
 
         // Insertar tipos de combustible
@@ -77,12 +77,12 @@ class BaseDeDatosHelper(context: Context) : SQLiteOpenHelper(
         // Insertar asociaciones sucursal-combustible
         db.execSQL("""
             INSERT INTO SucursalCombustible (id_sucursal, id_combustible) VALUES
-            (1, 1), -- Norte - Gasolina
-            (1, 2), -- Norte - Diésel
-            (2, 1), -- Centro - Gasolina
-            (2, 3), -- Centro - Etanol
-            (3, 2), -- Sur - Diésel
-            (3, 3); -- Sur - Etanol
+            (1, 1),  -- Alemana Gasolina
+            (1, 2),  -- Alemana Diesel
+            (2, 1),  -- Sur Gasolina
+            (2, 3),  -- Sur Etanol
+            (3, 2),  -- Beni Diesel
+            (3, 3);  -- Beni Etanol
         """.trimIndent())
     }
 

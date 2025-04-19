@@ -3,5 +3,13 @@
     <string name="drawer_cerrar">Cerrar</string>
     <string name="drawer_abrir">Abrir</string>
     <string name="titulo_tipo_combustible">Selecciona el tipo de combustible</string>
+    <string name="resultado_formateado">
+    ⏱ Tiempo estimado: %1$d min\n\ud83d\udee3️ Litros restantes: %2$.2f L
+</string>
+    <string name = "dibujar_fila" >Dibujar fila en el mapa </string>
+    <string name = "calcular_y_guardar" >Calcular</string>
+    <string name = "ver_resultados" >Ver resultados </string>
+
+
 
 </resources>

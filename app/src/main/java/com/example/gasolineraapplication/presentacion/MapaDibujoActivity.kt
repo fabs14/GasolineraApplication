@@ -11,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.SphericalUtil
@@ -22,11 +23,19 @@ class MapaDibujoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var puntosDibujo: MutableList<LatLng> = mutableListOf()
     private var polyline: Polyline? = null
 
+    // Variables para la ubicación de la sucursal
+    private var latitudSucursal = -1.0
+    private var longitudSucursal = -1.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mapa_dibujo)
 
         btnConfirmar = findViewById(R.id.btnConfirmar)
+
+        // Obtener latitud y longitud de la sucursal desde el Intent
+        latitudSucursal = intent.getDoubleExtra("latitud", -1.0)
+        longitudSucursal = intent.getDoubleExtra("longitud", -1.0)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -50,9 +59,16 @@ class MapaDibujoActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // Posicionar cámara (por ejemplo, en Santa Cruz)
-        val santaCruz = LatLng(-17.7833, -63.1821)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(santaCruz, 15f))
+        // Centrar en la sucursal si hay ubicación válida
+        if (latitudSucursal != -1.0 && longitudSucursal != -1.0) {
+            val ubicacionSucursal = LatLng(latitudSucursal, longitudSucursal)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionSucursal, 17f))
+            googleMap.addMarker(MarkerOptions().position(ubicacionSucursal).title("Sucursal"))
+        } else {
+            // Si no se pasó ubicación, centrar en Santa Cruz como antes
+            val santaCruz = LatLng(-17.7833, -63.1821)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(santaCruz, 15f))
+        }
 
         googleMap.setOnMapClickListener { punto ->
             puntosDibujo.add(punto)
